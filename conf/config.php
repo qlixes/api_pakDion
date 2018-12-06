@@ -5,3 +5,5 @@ $config['port'] = '3306';
 $config['username'] = 'root';
 $config['password'] = '';
 $config['database'] = 'api';
+
+$config['language'] = 'en';

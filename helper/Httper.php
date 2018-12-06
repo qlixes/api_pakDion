@@ -4,18 +4,23 @@ require __DIR__ . '/Utils.php';
 
 class Httper extends Utils
 {
-	function getResponse($flag, $data = array())
+	var $format = array();
+
+	function getResponse($flag, $label, $data = array())
 	{
+		require __DIR__ . '/Lang.php';
+
 		header("Content-Type: application/json; charset=UTF-8");
 		if($flag)
 			$output = array(
 				'status' => 200,
+				'message' => lang($label),
 				'data' => $data
 			);
 		else
 			$output = array(
 				'status' => 404,
-				'message' => 'Not Found'
+				'message' => lang($label),
 			);
 
 		echo json_encode($output);
@@ -31,7 +36,6 @@ class Httper extends Utils
 				$json = array();
 
 			$data = array_merge($_POST, $json
-				//jika ada tambahan secara default
 			);
 		}
 		else

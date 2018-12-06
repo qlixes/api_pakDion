@@ -54,15 +54,4 @@ class Models extends Config
 	{
 		return $this->pdo->lastInsertId();
 	}
-
-	function filter_used($data = array(), $filter = array())
-	{
-	    $result = array();
-	    
-	    foreach($filter as $i => $key)
-	        $result[$key] = $data[$key];
-	    
-	    unset($data);
-	    return $result;
-	}
 }

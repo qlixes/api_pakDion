@@ -1,6 +1,6 @@
 <?php
 
-define("MIN_YEAR", 1900);
+require __DIR__ . '/../conf/const.php';
 
 class Utils
 {
@@ -27,10 +27,51 @@ class Utils
 	    if($time === true)
 	        $dateformat .= " H:i:s";
 
-	    $strdate = date($dateformat, strtotime($strdate));
-	    if(date('Y', strtotime($strdate)) < MIN_YEAR)
-	        return null;
-	    else
-	        return $strdate;
+	    // $strdate = date($dateformat, strtotime($strdate));
+	    // if(date('Y', strtotime($strdate)) < MIN_YEAR)
+	    //     return null;
+	    // else
+	    //     return $strdate;
+
+	    $local = new DateTime($strdate, new DateTimeZone(TIMEZONE_STR));
+
+	    return $local->format($dateformat);
+	}
+
+	function filter_used($data = array(), $filter = array())
+	{
+		$result = array();
+		foreach($filter as $i => $key)
+			if(!empty($data[$key]))
+				$result[$key] = $data[$key];
+			else
+				$missing[] = $key;
+		$flag = (empty($missing));
+
+		return array($flag, $result);
+	}
+
+	function filter_used2($data = array(), $filter = array())
+	{
+		$result = array();
+		foreach($filter as $i => $key)
+			$result[$key] = $data[$key];
+
+		return $result;
+	}
+
+	function filter_default($data = array(), $default = array())
+	{
+		$result = array();
+		foreach($default as $key => $val)
+			if(empty($data[$key]))
+				$result[$key] = $val;
+
+		return array_merge($data, $result);
+	}
+
+	function hash_password($password)
+	{
+		return sha1($password);
 	}
 }

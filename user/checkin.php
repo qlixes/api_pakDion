@@ -12,23 +12,29 @@ $params = $http->getRequestParams();
 
 $model = new Users_model();
 
-if(!empty($params['username']))
-{
-	list($flag, $data) = $model->selectUser($param);
-	if($flag)
-	{
-		if(empty($param['lastlogin_datetime']))
-			$param2['lastlogin_datetime'] = $http->formatdatemon('now',true);
-		if(empty($param['lastlogin_ipaddress']))
-			$param2['lastlogin_ipaddress'] = $http->get_ip();
-		if(empty($param['lastlogin_useragent']))
-			$param2['lastlogin_useragent'] = $http->get_agent();
-		$param = array_merge($param, $param2);
-		
-		$model->upLastLogin($param);
-	}
-}
-else
-	list($flag, $data) = array(false, array());
+// preparing default data while null
+$master = $http->filter_default($params, array(
+	'lastcheckin_datetime'	=>	$http->formatdatemon('now', true),
+	'lastcheckin_ipaddress'	=>	$http->get_ip(),
+	'lastcheckin_useragent'	=>	$http->get_agent(),
+	'flag_login'			=>	FLAG_IS_CHECKIN,
+));
 
-return $http->getResponse($flag, $data);
+list($flag_login, $data_login) = $http->filter_used($master, array('username','password'));
+if($flag_login)
+{
+	$data_login = array_merge($data_login, array('password' => $http->hash_password($data_login['password'])));
+	list($is_login, $get_login) = $model->selectUser($data_login);
+	if($is_login)
+	{
+		list($filter_update, $datafilter_update) = $http->filter_used($master, array('username', 'lastlogin_datetime', 'lastlogin_ipaddress', 'lastlogin_useragent', 'flag_login'));
+
+		list($flag_update) = $model->upLastLogin($datafilter_update);
+		if($flag_update)
+			$http->getResponse($is_login, 'label_api_success', $get_login);
+		else
+			$http->getResponse($flag_update, 'label_api_failed_update');
+	} else
+		$http->getResponse($is_login, 'label_api_failed_login');
+} else
+	$http->getResponse($flag_login, 'label_api_missing_login');
