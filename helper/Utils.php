@@ -42,12 +42,11 @@ class Utils
 	{
 		$result = array();
 		foreach($filter as $i => $key)
-			if(!empty($data[$key]))
+			if(!empty($data[$key]) && $data[$key] !== 0)
 				$result[$key] = $data[$key];
 			else
 				$missing[] = $key;
 		$flag = (empty($missing));
-
 		return array($flag, $result);
 	}
 

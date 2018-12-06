@@ -40,7 +40,7 @@ class Users_model extends Models
 
 	function upLastLogout($params = array())
 	{
-		$query = 'update master_user set flag_login = :flag_login where username = "username;'; 
+		$query = 'update master_user set flag_login = :flag_login where username = :username;'; 
 
 		$sql = $this->edit($query, $params);
 		
