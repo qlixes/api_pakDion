@@ -30,10 +30,9 @@ class Httper extends Utils
 			if(!is_array($json))
 				$json = array();
 
-			$data = array_merge($_POST, $json, array(
-				'ipaddress' => $this->get_ip(),
-				'useragent'
-			));
+			$data = array_merge($_POST, $json
+				//jika ada tambahan secara default
+			);
 		}
 		else
 			$data = $_GET;
