@@ -17,7 +17,7 @@ $master = $http->filter_default($params, array(
 	'lastlogin_datetime'	=>	$http->formatdatemon('now', true),
 	'lastlogin_ipaddress'	=>	$http->get_ip(),
 	'lastlogin_useragent'	=>	$http->get_agent(),
-	'flag_login'			=>	FLAG_IS_LOGIN,
+	'flag_login'			=>	FLAG_IS_LOGIN, //
 ));
 
 list($flag_login, $data_login) = $http->filter_used($master, array('username','password'));
@@ -38,3 +38,5 @@ if($flag_login)
 		$http->getResponse($is_login, 'label_api_failed_login');
 } else
 	$http->getResponse($flag_login, 'label_api_missing_login');
+
+	unset($master);

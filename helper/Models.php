@@ -23,7 +23,10 @@ class Models extends Config
 
 		$this->status = ($result);
 
-		$this->result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		if($stmt->rowCount() > 1 )
+			$this->result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		else
+			$this->result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 		// $this->status = (!empty($this->result));	
 		return $this;

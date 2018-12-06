@@ -51,15 +51,6 @@ class Utils
 		return array($flag, $result);
 	}
 
-	function filter_used2($data = array(), $filter = array())
-	{
-		$result = array();
-		foreach($filter as $i => $key)
-			$result[$key] = $data[$key];
-
-		return $result;
-	}
-
 	function filter_default($data = array(), $default = array())
 	{
 		$result = array();
