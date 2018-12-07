@@ -6,10 +6,12 @@ class Users_model extends Models
 {
 	function selectUser($params = array())
 	{
-		$query = 'select * from master_user where username = :username';
+		$query = sprintf('select %s from master_user where username = :username', $this->sql);
 		
 		if(!empty($params['password']))
 			$query .= ' and password = :password';
+		if(!empty($params['flag_login']))
+			$query .= ' and flag_login = :flag_login';
 
 		$query .= ';'; //end sql
 
@@ -60,7 +62,7 @@ class Users_model extends Models
 	function selectArea($params = array())
 	{
 		// $filter = $this->filter_used($params, array('lattitude','longitude'));
-		$query = 'select * from master_location where latitude_min >= :latitude and latitude_max <= :latitude and longitude_min <= :longitude and longitude_max >= :longitude;';
+		$query = sprintf('select %s from master_location where latitude_min >= :latitude and latitude_max <= :latitude and longitude_min <= :longitude and longitude_max >= :longitude;', $this->sql);
 
 		$sql = $this->read($query, $params);
 

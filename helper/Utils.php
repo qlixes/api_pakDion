@@ -38,11 +38,19 @@ class Utils
 	    return $local->format($dateformat);
 	}
 
+	// need handler for empty int, string
 	function filter_used($data = array(), $filter = array())
 	{
 		$result = array();
 		foreach($filter as $i => $key)
-			if(!empty($data[$key]) && $data[$key] !== 0)
+			// if(empty($data[$key]))
+			// 	if($data[$key] === 0)
+			// 		$result[$key] = $data[$key];
+			// 	else
+			// 		$missing[] = $key;
+			// else
+			// 	$result[$key] = $data[$Key];
+			if(!empty($data[$key]))
 				$result[$key] = $data[$key];
 			else
 				$missing[] = $key;
@@ -63,5 +71,33 @@ class Utils
 	function hash_password($password)
 	{
 		return sha1($password);
+	}
+
+	function input($label)
+	{
+		require __DIR__ . '/../conf/alias.php';
+
+		return $input[$label];
+	}
+
+	function output($label)
+	{
+		require __DIR__ . '/../conf/alias.php';
+
+		if(empty($output[$label]))
+			$data = $label;
+		else
+			$data = $output[$label];
+
+		return $data;
+	}
+
+	function parser($params = array())
+	{
+		$result = array();
+		foreach($params as $key => $value)
+			$result[$this->input($key)] = $value;
+
+		return $result;
 	}
 }

@@ -12,18 +12,22 @@ class Httper extends Utils
 
 		header("Content-Type: application/json; charset=UTF-8");
 		if($flag)
+		{
+			http_response_code(200);
 			$output = array(
-				'status' => 200,
+				'code' => 200,
 				'message' => lang($label),
 				'data' => $data
 			);
-		else
+		} else {
+			http_response_code(404);
 			$output = array(
-				'status' => 404,
+				'code' => 404,
 				'message' => lang($label),
 			);
-
-		echo json_encode($output);
+		}
+		http_response_code();
+		echo json_encode($output, JSON_PRETTY_PRINT);
 	}
 
 	function getRequestParams()
@@ -37,10 +41,12 @@ class Httper extends Utils
 
 			$data = array_merge($_POST, $json
 			);
+			$final = $this->parser($data);
 		}
 		else
-			$data = $_GET;
+			$final = $this->parser($_GET);
+			// $data = $_GET;
 
-		return $data;
+		return $final;
 	}
 }

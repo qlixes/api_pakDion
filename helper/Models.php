@@ -5,6 +5,7 @@ require __DIR__ . '/Config.php';
 class Models extends Config
 {
 	var $pdo;
+	var $sql;
 
 	function __construct()
 	{
@@ -56,5 +57,25 @@ class Models extends Config
 	function insertID()
 	{
 		return $this->pdo->lastInsertId();
+	}
+
+	function alias($field = array())
+	{
+		require __DIR__ . '/../conf/alias.php';
+		$result = '';
+		foreach($field as $j => $key)
+		{
+			$result .= $key . ' as "' . $output[$key] . '"'; // litle hacks for whitespace
+			if($j < count($field)-1)
+				$result .= ', ';
+		}
+		$this->sql = $result;
+		unset($result);
+		return $this;
+	}
+
+	function show()
+	{
+		return $this->sql;
 	}
 }
