@@ -12,13 +12,13 @@ $params = $http->getRequestParams();
 
 $model = new Users_model();
 
-// preparing default data while null
-$master = $http->filter_default($params, array(
-	'flag_login'			=>	FLAG_DEFAULT, //
-));
+list($flag_log, $data_log) = $http->filter_used($params, array('username'));
 
-list($flag_logout, $data_logout) = $http->filter_used($master, array('username','flag_login'));
-list($flag_out) = $model->upLastLogout($data_logout);
-
-if($flag_out)
-	$http->getResponse($flag_out, 'label_api_success');
+//cari user apakah exist
+if($data_log)
+	{
+		$data_log['flag_login'] = FLAG_DEFAULT;
+		$status = $model->upLastLogout($data_log);
+		$http->getResponse($data_log, 'label_api_success');
+	} else
+		$http->getResponse($data_log, 'label_api_missing_login');

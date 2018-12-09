@@ -23,7 +23,7 @@ class Users_model extends Models
 	function upLastCheckIn($params = array())
 	{
 		// $filter = $this->filter_used($params, array('lastcheckin_datetime','lastcheckin_ipaddress','lastcheckin_useragent', 'lastcheckin_location', 'username'));
-		$this->query = 'update master_user set lastcheckin_datetime = :lastcheckin_datetime, lastcheckin_ipaddress = :lastcheckin_ipaddress, lastcheckin_useragent = :lastcheckin_useragent, lastcheckin_location = :lastcheckin_location where username = :username;'; 
+		$this->query = 'update master_user set lastcheckin_datetime = :lastcheckin_datetime, lastcheckin_ipaddress = :lastcheckin_ipaddress, lastcheckin_useragent = :lastcheckin_useragent, lastcheckin_location = :lastcheckin_location, flag_login = :flag_login where username = :username;'; 
 
 		$sql = $this->edit($this->query, $params);
 		

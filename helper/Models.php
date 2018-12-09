@@ -7,6 +7,7 @@ class Models extends Config
 	var $pdo;
 	var $print;
 	var $is_empty;
+	var $check;
 
 	function __construct()
 	{
