@@ -27,8 +27,11 @@ $output['latitude_min'] = 'latitude_start';
 $output['latitude_max'] = 'latitude_end';
 $output['longitude_min'] = 'longitude_start';
 $output['longitude_max'] = 'longitude_end';
+$output['id'] = 'no';
+$output['city'] = 'kota';
 
 // allowd for change index name
+// using for confirm using param name
 $input['user'] = 'username';
 $input['pass'] = 'password';
 $input['name'] = 'name';
@@ -51,3 +54,5 @@ $input['address'] = 'address';
 $input['phone'] = 'phone';
 $input['latitude'] = 'latitude';
 $input['longitude'] = 'longitude';
+$input['id'] = 'id';
+$input['city'] = 'city';

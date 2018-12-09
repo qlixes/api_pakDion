@@ -5,7 +5,8 @@ require __DIR__ . '/Config.php';
 class Models extends Config
 {
 	var $pdo;
-	var $sql;
+	var $print;
+	var $is_empty;
 
 	function __construct()
 	{
@@ -59,9 +60,11 @@ class Models extends Config
 		return $this->pdo->lastInsertId();
 	}
 
+	// using fieldname on table
 	function alias($field = array())
 	{
 		require __DIR__ . '/../conf/alias.php';
+		$this->check = true;
 		$result = '';
 		foreach($field as $j => $key)
 		{
@@ -69,13 +72,48 @@ class Models extends Config
 			if($j < count($field)-1)
 				$result .= ', ';
 		}
-		$this->sql = $result;
+		$this->print = $result;
 		unset($result);
 		return $this;
 	}
 
 	function show()
 	{
-		return $this->sql;
+		if($this->check)
+		{
+			$res = $this->print;
+			$this->check = false;
+		} else
+			$res = '*';
+		return $res;
 	}
+
+	function show_query()
+	{
+		return $this->query;
+	}
+
+	// function alias($field = array())
+	// {
+	// 	require __DIR__ . '/../conf/alias.php';
+	// 	$result = ''; //for resetting
+	// 	$status = (!empty($field)); // for resetting
+	// 	foreach($field as $j => $key)
+	// 	{
+	// 		$result .= $key . ' as "' . $output[$key] . '"'; // litle hacks for whitespace
+	// 		if($j < count($field)-1)
+	// 			$result .= ', ';
+	// 	}
+	// 	$this->print = $result;
+	// 	$this->is_empty = $status;
+	// 	unset($result);
+	// 	return $this;
+	// }
+
+	// function show()
+	// {
+	// 	$data = ($this->is_empty) ? $this->print : '*';
+	// 	unset($this->print);
+	// 	return $data;
+	// }
 }

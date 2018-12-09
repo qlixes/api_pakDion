@@ -43,6 +43,13 @@ class Utils
 	{
 		$result = array();
 		foreach($filter as $i => $key)
+			if(!empty($data[$key]))
+				$result[$key] = $data[$key];
+			else
+				if(isset($data[$key]) && $data[$key] == 0)
+					$result[$key] = $data[$key];
+				else
+					$missing[] = $key;
 			// if(empty($data[$key]))
 			// 	if($data[$key] === 0)
 			// 		$result[$key] = $data[$key];
@@ -50,10 +57,10 @@ class Utils
 			// 		$missing[] = $key;
 			// else
 			// 	$result[$key] = $data[$Key];
-			if(!empty($data[$key]))
-				$result[$key] = $data[$key];
-			else
-				$missing[] = $key;
+			// if(!empty($data[$key]))
+			// 	$result[$key] = $data[$key];
+			// else
+			// 	$missing[] = $key;
 		$flag = (empty($missing));
 		return array($flag, $result);
 	}
@@ -62,8 +69,10 @@ class Utils
 	{
 		$result = array();
 		foreach($default as $key => $val)
-			if(empty($data[$key]))
+		{
+			if(!isset($data[$key]))
 				$result[$key] = $val;
+		}
 
 		return array_merge($data, $result);
 	}
