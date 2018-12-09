@@ -16,43 +16,52 @@ $master = $http->filter_default($params, array(
 	'lastlogin_datetime' => $http->formatdatemon('now', true),
 	'lastlogin_ipaddress' => $http->get_ip(),
 	'lastlogin_useragent' => $http->get_agent(),
-	'flag_login' => FLAG_IS_LOGIN,
+	'flag_login' => FLAG_DEFAULT,
 ));
 
 list($flag_user, $data_user) = $http->filter_used($master, array('username', 'password'));
 if($flag_user)
 {
 	$data_user = array_merge($data_user, array(
-		'password' => $http->hash_password($data_user['password'])
+		'password' => $http->hash_password($data_user['password']),
 	));
 	// munculkan request field
-	list($flag_login, $data_login) = $model->alias(array('username', 'password'))->selectUser($data_user);
+	list($flag_login, $data_login) = $model->alias(array('username', 'name','position'))->selectUser($data_user);
+
+	// param update with flag_login = 0
+	list($flag_update, $data_update) = $http->filter_used($master, array(
+		'lastlogin_datetime', 'lastlogin_ipaddress', 'lastlogin_useragent', 'username', 'flag_login'
+	));
+
+	$set_default = $model->upLastLogin($data_update); //change flag_login to default
+
 	if($data_login)
 	{
-		// param update
-		list($flag_update, $data_update) = $http->filter_used($master, array(
-			'lastlogin_datetime', 'lastlogin_ipaddress', 'lastlogin_useragent', 'username', 'flag_login'
-		));
+		$data_update['flag_login'] = FLAG_IS_LOGIN;
+
 		// param location
 		list($flag_loc, $data_loc) = $http->filter_used($master, array(
 			'latitude', 'longitude'
 		));
+
 		if($flag_update && $flag_loc)
 		{
 			// update lastlogin_*
 			$status_update = $model->upLastLogin($data_update);
 
 			// search location
-			list($flag_location, $data_location) = $model->selectArea($data_loc);
+			list($flag_location, $data_location) = $model->alias(array('id','name','address', 'city'))->selectArea($data_loc);	
 			if($data_location)
-				$location = array(
-					'id' => $data_location['id'],
-					'name' => $data_location['name'],
-					'address' => $data_location['address']
-				);
+				$location = $data_location;
+				// $location = array(
+				// 	'id' => $data_location['id'],
+				// 	'name' => $data_location['name'],
+				// 	'address' => $data_location['address']
+				// );
 			else
 				$location = array();
-			$final = array_merge($data_login, array('location' => $location));
+
+			$final = array_merge($data_login, array($http->output('location') => $location));
 
 			$http->getResponse(($flag_update && $flag_loc), 'label_api_success', $final);
 		} else
