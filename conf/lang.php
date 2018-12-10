@@ -10,3 +10,4 @@ $lang['label_api_missing_login'] = "Missing credentials";
 $lang['label_api_missing_parameter'] = "Parameter missing.";
 $lang['label_api_need_login'] = "Please login first";
 
+$lang['label_api_missing_location'] = "Location out of services";

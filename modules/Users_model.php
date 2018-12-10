@@ -52,11 +52,11 @@ class Users_model extends Models
 	function addHistory($params = array())
 	{
 		// $filter = $this->filter_used($params, array('username','password','datetime','location','ipaddress','useragent','note','flag'));
-		$this->query = 'insert into  data_checkin(username, datetime, location, ipaddress, useragent, note, flag) values (:username, :password, :datetime, :location, :ipaddress, :useragent, :note, :flag);';
+		$this->query = 'insert into  data_checkin(username, datetime, location, ipaddress, useragent, note, flag) values (:username, :datetime, :location, :ipaddress, :useragent, :note, :flag);';
 
 		$sql = $this->edit($this->query, $params);
 
-		return array($sql->status(), $this->model->insertID());
+		return array($sql->status(), $this->insertID());
 	}
 
 	function selectArea($params = array())

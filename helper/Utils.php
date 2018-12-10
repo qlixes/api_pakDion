@@ -46,7 +46,7 @@ class Utils
 			if(!empty($data[$key]))
 				$result[$key] = $data[$key];
 			else
-				if(isset($data[$key]) && $data[$key] == 0)
+				if(isset($data[$key]) && ($data[$key] == 0 || $data[$key] == ''))
 					$result[$key] = $data[$key];
 				else
 					$missing[] = $key;
