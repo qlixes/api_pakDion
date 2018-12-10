@@ -50,17 +50,6 @@ class Utils
 					$result[$key] = $data[$key];
 				else
 					$missing[] = $key;
-			// if(empty($data[$key]))
-			// 	if($data[$key] === 0)
-			// 		$result[$key] = $data[$key];
-			// 	else
-			// 		$missing[] = $key;
-			// else
-			// 	$result[$key] = $data[$Key];
-			// if(!empty($data[$key]))
-			// 	$result[$key] = $data[$key];
-			// else
-			// 	$missing[] = $key;
 		$flag = (empty($missing));
 		return array($flag, $result);
 	}
@@ -86,7 +75,8 @@ class Utils
 	{
 		require __DIR__ . '/../conf/alias.php';
 
-		return $input[$label];
+		if(!empty($input[$label]))
+			return $input[$label];
 	}
 
 	function output($label)
@@ -101,6 +91,7 @@ class Utils
 		return $data;
 	}
 
+	// parser params input to translate into alias input
 	function parser($params = array())
 	{
 		$result = array();

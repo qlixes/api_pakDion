@@ -62,7 +62,8 @@ class Users_model extends Models
 	function selectArea($params = array())
 	{
 		// $filter = $this->filter_used($params, array('lattitude','longitude'));
-		$this->query = sprintf('select %s from master_location where ((:longitude -longitude_min) >= 0 and (longitude_max - :longitude) >= 0) and ((:latitude-latitude_min) <= 0 and (latitude_max - (:latitude)) <= 0);', $this->show());
+		// $this->query = sprintf('select %s from master_location where ((:longitude -longitude_min) >= 0 and (longitude_max - :longitude) >= 0) and ((:latitude-latitude_min) <= 0 and (latitude_max - (:latitude)) <= 0);', $this->show());
+		$this->query = sprintf('select %s from master_location WHERE latitude_min >= :latitude AND latitude_max <= :latitude AND longitude_min <= :longitude AND longitude_max >= :longitude;', $this->show());
 
 		$sql = $this->read($this->query, $params);
 
