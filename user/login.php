@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * @api {post} /user/:id Request User information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ */
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -20,6 +31,7 @@ $master = $http->filter_default($params, array(
 ));
 
 list($flag_user, $data_user) = $http->filter_used($master, array('username', 'password'));
+
 if($flag_user)
 {
 	$data_user = array_merge($data_user, array(
@@ -35,35 +47,28 @@ if($flag_user)
 
 	$set_default = $model->upLastLogin($data_update); //change flag_login to default
 
-	if($data_login)
+	if($data_login) // if params for login completed
 	{
 		$data_update['flag_login'] = FLAG_IS_LOGIN;
 
 		// param location
-		list($flag_loc, $data_loc) = $http->filter_used($master, array(
-			'latitude', 'longitude'
-		));
+		list($flag_loc, $data_loc) = $http->filter_used($master, array('latitude', 'longitude'));
 
-		if($flag_update && $flag_loc)
+		// $parameter check initial
+		if($flag_update && $flag_loc) // if params needed is completed
 		{
 			// update lastlogin_*
 			$status_update = $model->upLastLogin($data_update);
 
 			// search location
 			list($flag_location, $data_location) = $model->alias(array('id','name','address', 'city'))->selectArea($data_loc);	
-			if($data_location)
-				$location = $data_location;
-				// $location = array(
-				// 	'id' => $data_location['id'],
-				// 	'name' => $data_location['name'],
-				// 	'address' => $data_location['address']
-				// );
-			else
-				$location = array();
 
-			$final = array_merge($data_login, array($http->output('location') => $location));
-
-			$http->getResponse(($flag_update && $flag_loc), 'label_api_success', $final);
+			if($data_location) // filter location must exist
+			{
+				$final = array_merge($data_login, array($http->output('location') => $data_location));
+				$http->getResponse($data_location, 'label_api_success', $final);
+			} else
+				$http->getResponse($data_location, 'label_api_missing_location');
 		} else
 			$http->getResponse(($flag_update && $flag_loc), 'label_api_missing_parameter');
 	} else
