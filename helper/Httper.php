@@ -1,6 +1,7 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-require __DIR__ . '/Utils.php'; 
+require HELPERPATH . 'Utils.php'; 
 
 class Httper extends Utils
 {

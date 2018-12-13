@@ -1,6 +1,7 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-require __DIR__ . '/../conf/const.php';
+require CONFIGPATH . 'const.php';
 
 class Utils
 {
@@ -73,7 +74,7 @@ class Utils
 
 	function input($label)
 	{
-		require __DIR__ . '/../conf/alias.php';
+		require CONFIGPATH . 'alias.php';
 
 		if(!empty($input[$label]))
 			return $input[$label];
@@ -81,7 +82,7 @@ class Utils
 
 	function output($label)
 	{
-		require __DIR__ . '/../conf/alias.php';
+		require CONFIGPATH . 'alias.php';
 
 		if(empty($output[$label]))
 			$data = $label;

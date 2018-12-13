@@ -1,6 +1,7 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-require __DIR__ . '/../helper/Models.php';
+require HELPERPATH . 'Models.php';
 
 class Users_model extends Models
 {

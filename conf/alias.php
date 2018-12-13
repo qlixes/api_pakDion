@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 // allowed for change value name
 // forbidden using whitespace or will be fucked up

@@ -1,6 +1,7 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-require __DIR__ . '/Config.php';
+require HELPERPATH 'Config.php';
 
 class Models extends Config
 {

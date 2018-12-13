@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['label_api_success'] = "Success";
 $lang['label_api_not_found'] = "Error, data not found";

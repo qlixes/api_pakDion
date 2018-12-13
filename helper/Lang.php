@@ -1,8 +1,9 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 function lang($label)
 {
-	require __DIR__ . '/../conf/lang.php';
+	require CONFIGPATH . 'lang.php';
 
 	return $lang[$label];
 }
