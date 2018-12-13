@@ -7,6 +7,6 @@ class Errors extends Controller implements IController
 {
     function index()
     {
-        echo 'failed';
+        $this->getResponse(false, 'label_api_not_found');
     }
 }

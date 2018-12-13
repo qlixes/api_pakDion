@@ -7,17 +7,17 @@ class Users extends Controller implements IController
 {
     function index()
     {
-        echo 'index';
+        $this->getResponse(false, 'label_api_not_found');
     }
 
     function login()
     {
-        echo 'sukses';
+        
     }
 
     function logout()
     {}
 
-    function checkin()
+    function checkin($token)
     {}
 }

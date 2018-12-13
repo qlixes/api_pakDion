@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require HELPERPATH 'Config.php';
+require HELPERPATH . 'Config.php';
 
 class Models extends Config
 {
@@ -32,7 +32,7 @@ class Models extends Config
 		else
 			$this->result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		// $this->status = (!empty($this->result));	
+		// $this->status = (!empty($this->result));
 		return $this;
 	}
 

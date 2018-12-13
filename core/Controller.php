@@ -11,10 +11,11 @@ interface IController
 class Controller extends Httper
 {
     static $controller = array();
+    var $users;
 
     function __construct()
     {
-
+        $this->users = $this->loadClass('users_model', 'models');
     }
 
     function loadClass($class, $path)

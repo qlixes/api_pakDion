@@ -1,6 +1,6 @@
 <?php
 
-define('BASEPATH', __DIR__);
+define('BASEPATH', __DIR__ . '/');
 define('COREPATH', __DIR__ . '/core/');
 define('CONTROLLERPATH', __DIR__ . '/controllers/');
 define('MODELPATH', __DIR__ . '/models/');
