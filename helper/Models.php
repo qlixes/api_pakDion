@@ -13,7 +13,7 @@ class Models extends Database
 	function __construct()
 	{
 		try {
-		    $this->pdo = new PDO('mysql:host=' . $this->items('hostname') .';port=' . $this->items('port') . ';dbname=' . $this->items('database'), $this->items('username'), $this->items('password'));
+		    $this->pdo = new PDO('mysql:host=' . $this->items('hostname') . ';dbname=' . $this->items('database'), $this->items('username'), $this->items('password'));
 		    $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(PDOException $e) {
 		    echo 'ERROR: ' . $e->getMessage();

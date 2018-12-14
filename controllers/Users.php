@@ -28,7 +28,7 @@ class Users extends Controller implements IController
         $this->getResponse(false, 'label_api_not_found');
     }
 
-    function _check_login($need_login = false)
+    function _check_login($need_login = true)
     {
         $select = array('username');
         if($need_login)
@@ -36,7 +36,7 @@ class Users extends Controller implements IController
         else
             $select[] = 'flag_login';
 
-        list($flag_user, $data_user) = $this->filter_used($this->master, array('username','password'));
+        list($flag_user, $data_user) = $this->filter_used($this->master, $select);
         list($flag_api, $data_api) = $this->filter_used($this->master, array('api_key'));
 
         return array(($flag_user || $flag_api), $data_user, $data_api);
@@ -46,14 +46,14 @@ class Users extends Controller implements IController
     {
         $this->master = array_merge($this->master, array('lastlogin_datetime' => $this->formatdatemon('now', true)));
 
-        $list($flag_user, $data_user, $data_api) = $this->_check_login(true);
+        list($flag_user, $data_user, $data_api) = $this->_check_login();
 
         if($flag_user) // params login if completed
         {
             $data_user = array_merge($data_user, array('password' => $this->hash_password($data_user['password'])));
             //check login in db
             //keluarkan params result utk user add di alias
-            list($flag_login, $data_login) = $this->users->alias(array('username','password','position'))->selectUser($data_user);
+            list($flag_login, $data_login) = $this->users->alias(array('username','position'))->selectUser($data_user);
 
             if($data_login || ($data_api === API_KEY))
             {
@@ -64,7 +64,8 @@ class Users extends Controller implements IController
                 // check params must exists
                 list($flag_location, $data_location) = $this->filter_used($this->master, array('latitude','longitude'));
 
-                if($flag_update && $flag_location)
+                $check_location = ($data_location && $data_location['longitude'] !== '' && $data_location['latitude'] !== '');
+                if($data_update && $check_location)
                 {
                     // update lastlogin now
                     $update_login = $this->users->upLastLogin($data_update);
@@ -80,7 +81,7 @@ class Users extends Controller implements IController
                     } else
                         $this->getResponse($data_lokasi, 'label_api_missing_location');
                 } else
-                    $this->getResponse(($flag_update && $flag_location), 'label_api_missing_parameter');
+                    $this->getResponse(($data_update && $check_location), 'label_api_missing_parameter');
             } else
                 $this->getResponse($data_login, 'label_api_failed_login');
         } else
@@ -100,7 +101,7 @@ class Users extends Controller implements IController
     {
         $this->master = array_merge($this->master, array('flag_login' => FLAG_IS_LOGIN, 'lastcheckin_datetime' => $this->formatdatemon('now', true)));
 
-        list($flag_user, $data_user, $data_api) = $this->_check_login();
+        list($flag_user, $data_user, $data_api) = $this->_check_login(false);
 
         $check_auth = ($data_user || ($data_user && $data_api && $data_api['api_key'] === API_KEY));
         if($check_auth)
@@ -111,7 +112,8 @@ class Users extends Controller implements IController
             {
                 //check koordinat
                 list($flag_location, $data_location) = $this->filter_used($this->master, array('longitude','latitude'));
-                if($data_location)
+                $check_location = ($data_location && $data_location['longitude'] !== '' && $data_location['latitude'] !== '');
+                if($check_location)
                 {
                     list($flag_lokasi, $data_lokasi) = $this->users->selectArea($data_location);
 
@@ -133,7 +135,7 @@ class Users extends Controller implements IController
                     } else
                         $this->getResponse($data_lokasi, 'label_api_missing_location');
                 } else
-                    $this->getResponse($data_location, 'label_api_missing_parameter');
+                    $this->getResponse($check_location, 'label_api_missing_parameter');
             } else
                 $this->getResponse($data_login, 'label_api_need_login');
         } else
