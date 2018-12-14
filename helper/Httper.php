@@ -59,9 +59,10 @@ class Httper extends Utils
 
 		$plain_request_body = json_decode((($this->items('use_base64')) ? base64_decode($request_body) : $request_body),true);
 
-		$plain_login = array('username' => $_SERVER['PHP_AUTH_USER'], 'password' => $_SERVER['PHP_AUTH_PW']);
+		// $plain_login = array('username' => $_SERVER['PHP_AUTH_USER'], 'password' => $_SERVER['PHP_AUTH_PW']);
+		$plain_login = array();
 
-		$all_request = (is_array($plain_request_body)) ? array_merge($_GET, $_POST, $plain_request_body, $plain_login) : array_merge($_GET, $_POST, $plain_login);
+		$all_request = (is_array($plain_request_body)) ? array_merge($plain_login, $_GET, $_POST, $plain_request_body) : array_merge($plain_login, $_GET, $_POST);
 
 		return $this->parser($all_request);
 	}
