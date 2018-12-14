@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require HELPERPATH . 'Config.php';
+require HELPERPATH . 'Database.php';
 
-class Models extends Config
+class Models extends Database
 {
 	var $pdo;
 	var $print;

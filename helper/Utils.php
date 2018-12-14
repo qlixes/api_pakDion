@@ -2,8 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require CONFIGPATH . 'const.php';
+require HELPERPATH . 'Config.php';
 
-class Utils
+class Utils extends Config
 {
 	function get_ip()
 	{

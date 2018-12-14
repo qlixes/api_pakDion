@@ -8,7 +8,7 @@ class Users_model extends Models
 	function selectUser($params = array())
 	{
 		$this->query = sprintf('select %s from master_user where username = :username', $this->show());
-		
+
 		if(!empty($params['password']))
 			$this->query .= ' and password = :password';
 		if(!empty($params['flag_login']))
@@ -24,29 +24,29 @@ class Users_model extends Models
 	function upLastCheckIn($params = array())
 	{
 		// $filter = $this->filter_used($params, array('lastcheckin_datetime','lastcheckin_ipaddress','lastcheckin_useragent', 'lastcheckin_location', 'username'));
-		$this->query = 'update master_user set lastcheckin_datetime = :lastcheckin_datetime, lastcheckin_ipaddress = :lastcheckin_ipaddress, lastcheckin_useragent = :lastcheckin_useragent, lastcheckin_location = :lastcheckin_location, flag_login = :flag_login where username = :username;'; 
+		$this->query = 'update master_user set lastcheckin_datetime = :lastcheckin_datetime, lastcheckin_ipaddress = :lastcheckin_ipaddress, lastcheckin_useragent = :lastcheckin_useragent, lastcheckin_location = :lastcheckin_location, flag_login = :flag_login where username = :username;';
 
 		$sql = $this->edit($this->query, $params);
-		
-		return $sql->status();
+
+		return array($sql->status());
 	}
 
 	function upLastLogin($params = array())
 	{
 		// $filter = $this->filter_used($params, array('lastlogin_datetime', 'lastlogin_ipaddress', 'lastlogin_useragent','username', 'flag_login'));
-		$this->query = 'update master_user set lastlogin_datetime = :lastlogin_datetime, lastlogin_ipaddress = :lastlogin_ipaddress, lastlogin_useragent = :lastlogin_useragent, flag_login = :flag_login where username = :username;'; 
+		$this->query = 'update master_user set lastlogin_datetime = :lastlogin_datetime, lastlogin_ipaddress = :lastlogin_ipaddress, lastlogin_useragent = :lastlogin_useragent, flag_login = :flag_login where username = :username;';
 
 		$sql = $this->edit($this->query, $params);
-		
+
 		return array($sql->status());
 	}
 
 	function upLastLogout($params = array())
 	{
-		$this->query = 'update master_user set flag_login = :flag_login where username = :username;'; 
+		$this->query = 'update master_user set flag_login = :flag_login where username = :username;';
 
 		$sql = $this->edit($this->query, $params);
-		
+
 		return array($sql->status());
 	}
 

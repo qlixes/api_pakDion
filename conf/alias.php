@@ -33,8 +33,8 @@ $output['city'] = 'kota';
 
 // allowd for change index name
 // using for confirm using param name
-$input['user'] = 'username';
-$input['pass'] = 'password';
+$input['username'] = 'username';
+$input['password'] = 'password';
 $input['name'] = 'name';
 $input['position'] = 'position';
 $input['timestamp'] = 'datetime';
@@ -57,3 +57,4 @@ $input['latitude'] = 'latitude';
 $input['longitude'] = 'longitude';
 $input['id'] = 'id';
 $input['city'] = 'city';
+$input['api_key'] = 'api_key';

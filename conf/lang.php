@@ -12,3 +12,9 @@ $lang['label_api_missing_parameter'] = "Parameter missing.";
 $lang['label_api_need_login'] = "Please login first";
 
 $lang['label_api_missing_location'] = "Location out of services";
+
+$lang['label_api_failed_key'] = "Incorrect credentials key";
+
+$lang['label_api_success_checkin'] = "Success check in";
+$lang['label_api_success_logout'] = "Success logout";
+$lang['label_api_success_login'] = "Success login";
