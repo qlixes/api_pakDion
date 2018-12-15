@@ -7,4 +7,4 @@ $config['username'] = 'root';
 $config['password'] = '';
 $config['database'] = 'api';
 
-$config['use_decode'] = FALSE;
+$config['use_base64'] = FALSE;
