@@ -37,7 +37,7 @@ class Users extends Controller implements IController
             $select[] = 'flag_login';
 
         list($flag_user, $data_user) = $this->filter_used($this->master, $select);
-        list($flag_api, $data_api) = $this->filter_used($this->master, array('api_key'));
+        list($flag_api, $data_api) = $this->filter_used($this->master, array('api_key','username'));
 
         return array(($flag_user || $flag_api), $data_user, $data_api);
     }
@@ -50,14 +50,15 @@ class Users extends Controller implements IController
 
         if($flag_user) // params login if completed
         {
-            $data_user = array_merge($data_user, array('password' => $this->hash_password($data_user['password'])));
+            if(!empty($data_user['password']))
+                $data_user = array_merge($data_user, array('password' => $this->hash_password($data_user['password'])));
+
             //check login in db
             //keluarkan params result utk user add di alias
             list($flag_login, $data_login) = $this->users->alias(array('username','position'))->selectUser($data_user);
 
             if($data_login || ($data_api === API_KEY))
             {
-                $this->data_login = $data_login;
                 //check lastlogin params
                 list($flag_update, $data_update) = $this->filter_used($this->master, array('lastlogin_datetime', 'lastlogin_ipaddress','lastlogin_useragent','username','flag_login'));
 
@@ -94,7 +95,9 @@ class Users extends Controller implements IController
 
         list($flag_logout, $data_logout) = $this->filter_used($this->master, array('username','flag_login'));
 
-        $this->getResponse(true, 'label_api_success_logout');
+        $check = $this->users->upLastLogout($data_logout);
+
+        $this->getResponse($check, 'label_api_success_logout');
     }
 
     function checkin()
@@ -103,8 +106,8 @@ class Users extends Controller implements IController
 
         list($flag_user, $data_user, $data_api) = $this->_check_login(false);
 
-        $check_auth = ($data_user || ($data_user && $data_api && $data_api['api_key'] === API_KEY));
-        if($check_auth)
+        // $check_auth = ($data_user || ($data_user && $data_api && $data_api['api_key'] === API_KEY));
+        if($flag_user)
         {
             list($flag_login, $data_login) = $this->users->selectUser($data_user);
 
@@ -139,6 +142,6 @@ class Users extends Controller implements IController
             } else
                 $this->getResponse($data_login, 'label_api_need_login');
         } else
-            $this->getResponse($check_auth, 'label_api_missing_parameter');
+            $this->getResponse($flag_user, 'label_api_missing_parameter');
     }
 }
